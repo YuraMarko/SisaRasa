@@ -1,0 +1,132 @@
+/* ===== Warna dan font ===== */
+:root {
+  --ground: #FBF4E4;
+  --ink: #2A1B12;
+  --muted: #6B5646;
+  --jam: #9A3F1B;
+  --nanas: #F4B942;
+  --pisang: #B9772E;
+  --garis: #F0E6D0;
+  --badge: #E8EBC8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ===== Header ===== */
+header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  border-bottom: 1px solid var(--garis);
+}
+
+.logo {
+  font-family: 'Bitstream Charter', 'DejaVu Serif', Georgia, serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.5px;
+  color: var(--jam);
+}
+
+/* ===== Konten ===== */
+main {
+  width: min(800px, 100% - 32px);
+  margin: 0 auto;
+  padding: 36px 0 60px;
+}
+
+h1 {
+  margin: 0 0 36px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 34px;
+}
+
+.intro p {
+  flex: 1 1 300px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.hero {
+  flex: none;
+  width: 325px;
+  height: 325px;
+  border: 3px solid var(--nanas);
+  border-radius: 10px;
+  background: #FBEBC0;
+  overflow: hidden;
+}
+
+/* ===== Kartu produk ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 318px;
+  padding: 0 10px 12px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 66px;
+  height: 56px;
+  padding: 8px 0 0 10px;
+  background: var(--badge);
+  border-radius: 10px 0 66px 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.card .img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 204px;
+  padding-top: 44px;
+}
+
+.card .brand { margin-top: 2px; font-size: 14px; color: var(--muted); }
+.card .name  { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+.card .price { margin-top: auto; font-size: 14px; font-weight: 700; color: var(--jam); }
+
+.foot {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ===== Layar kecil ===== */
+@media (max-width: 600px) {
+  header { padding: 0 20px; }
+  .hero { width: 100%; max-width: 325px; margin: 0 auto; }
+}
