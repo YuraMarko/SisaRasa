@@ -101,15 +101,12 @@ function ilustrasi(jenis) {
   return (ILUSTRASI[jenis] || ILUSTRASI.buahLain)();
 }
 
-// ===== Gambar utama: dua jar dalam kotak =====
+// ===== Gambar utama: pakai foto produk nyata =====
 function heroHTML() {
   return `
-    <svg width="100%" height="100%" viewBox="0 0 325 325" role="img" aria-label="Jar selai SisaRasa dalam kotak">
-      <rect x="40" y="215" width="245" height="110" fill="#E9A64B"/>
-      <rect x="40" y="215" width="245" height="14" fill="#C98A3B"/>
-      <g transform="translate(70,70)">${jarInner('selaiNanas')}</g>
-      <g transform="translate(150,40) scale(0.9)">${jarInner('selaiPisang')}</g>
-      <text x="162" y="278" text-anchor="middle" font-family="Bitstream Charter, DejaVu Serif, serif"
-            font-size="30" font-weight="700" fill="#FBF4E4">SisaRasa</text>
-    </svg>`;
+    <div class="herovisuals" aria-label="Produk SisaRasa">
+      <img src="images/produk.jpg" alt="Produk SisaRasa" class="herovisuals-main">
+      <img src="images/pisang.jpg" alt="Pisang" class="herovisuals-side herovisuals-side-left">
+      <img src="images/nanas.jpg" alt="Nanas" class="herovisuals-side herovisuals-side-right">
+    </div>`;
 }
