@@ -167,7 +167,7 @@ h1.rata-kiri { text-align: left; font-size: 26px; margin-bottom: 12px; }
 }
 .kat:hover, .kat:focus-visible { border-color: var(--ink); text-decoration: none; }
 .kat-art { display: flex; align-items: center; justify-content: center; height: 130px; background: var(--ground); border-radius: 10px; }
-.kat-art svg { max-height: 110px; width: auto; }
+.kat-art svg, .kat-art img { max-height: 110px; max-width: 100%; width: auto; object-fit: contain; }
 .kat h3 { margin: 8px 0 0; font-size: 20px; }
 .kat p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
 .kat .chip { align-self: flex-start; }
@@ -241,7 +241,7 @@ h1.rata-kiri { text-align: left; font-size: 26px; margin-bottom: 12px; }
   height: 170px;
   padding-top: 40px;
 }
-.card .img svg { max-height: 120px; width: auto; }
+.card .img svg, .card .img img { max-height: 120px; max-width: 100%; width: auto; object-fit: contain; }
 
 .card .brand { margin-top: 2px; font-size: 13px; color: var(--muted); }
 .card .name  { font-size: 15px; font-weight: 800; line-height: 1.35; }

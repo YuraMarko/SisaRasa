@@ -1,23 +1,7 @@
-// ===== Ilustrasi (SVG buatan sendiri) =====
-const JAR_WARNA = { selaiNanas: '#F4B942', selaiPisang: '#B9772E' };
-const JAR_LABEL = { selaiNanas: 'Nanas', selaiPisang: 'Pisang' };
-
-function jarInner(jenis) {
-  return `
-    <rect x="22" y="4" width="76" height="24" rx="6" fill="#2A1B12"/>
-    <rect x="12" y="24" width="96" height="120" rx="18" fill="${JAR_WARNA[jenis]}"/>
-    <rect x="24" y="64" width="72" height="56" rx="8" fill="#FBF4E4"/>
-    <text x="60" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#9A3F1B">SisaRasa</text>
-    <text x="60" y="106" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B5646">${JAR_LABEL[jenis]}</text>`;
-}
-
-function jarSVG(jenis, lebar = 92, tinggi = 115) {
-  return `<svg width="${lebar}" height="${tinggi}" viewBox="0 0 120 150" role="img" aria-label="Jar selai ${JAR_LABEL[jenis]}">${jarInner(jenis)}</svg>`;
-}
-
+// ===== Ilustrasi produk =====
 const ILUSTRASI = {
-  selaiNanas: () => jarSVG('selaiNanas'),
-  selaiPisang: () => jarSVG('selaiPisang'),
+  selaiNanas: () => '<img src="images/nanas.jpg" alt="Selai nanas SisaRasa">',
+  selaiPisang: () => '<img src="images/pisang.jpg" alt="Selai pisang SisaRasa">',
 
   buahPisang: () => `
     <svg width="130" height="110" viewBox="0 0 130 110" role="img" aria-label="Pisang matang">
@@ -106,7 +90,7 @@ function heroHTML() {
   return `
     <div class="herovisuals" aria-label="Produk SisaRasa">
       <img src="images/produk.jpg" alt="Produk SisaRasa" class="herovisuals-main">
-      <img src="images/pisang.jpg" alt="Pisang" class="herovisuals-side herovisuals-side-left">
-      <img src="images/nanas.jpg" alt="Nanas" class="herovisuals-side herovisuals-side-right">
+      <img src="images/pisang.jpg" alt="Selai pisang" class="herovisuals-side herovisuals-side-left">
+      <img src="images/nanas.jpg" alt="Selai nanas" class="herovisuals-side herovisuals-side-right">
     </div>`;
 }
