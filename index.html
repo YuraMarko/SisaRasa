@@ -7,27 +7,31 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <span class="logo">SisaRasa</span>
+  <header class="top">
+    <a class="logo" href="#/">SisaRasa</a>
+    <nav id="nav" aria-label="Menu utama">
+      <a href="#/" data-r="">Beranda</a>
+      <a href="#/selai" data-r="selai">Selai</a>
+      <a href="#/roti" data-r="roti">Roti</a>
+      <a href="#/buah" data-r="buah">Buah</a>
+      <a href="#/pedagang" data-r="pedagang">Pedagang</a>
+      <a href="#/pesanan" data-r="pesanan">Pesanan</a>
+      <a href="#/keranjang" data-r="keranjang" class="cart">Keranjang <span id="badge-cart" class="badge-cart" hidden>0</span></a>
+    </nav>
   </header>
 
-  <main>
-    <h1>Selamatkan buah, jadikan selai</h1>
+  <main id="app"></main>
 
-    <section class="intro">
-      <p>
-        Setiap minggu kami mengolah pisang dan nanas matang berlebih dari pedagang pasar
-        menjadi selai. Pesan lewat pre-order mingguan, lalu scan QR di jar untuk melihat
-        berapa kilogram buah yang terselamatkan.
-      </p>
-      <div class="hero" id="hero"></div>
-    </section>
+  <footer class="foot">
+    Prototipe SisaRasa. Data dan pesanan disimpan di browser ini, pembayaran masih simulasi.<br>
+    Nama penjual, harga, dan stok adalah data contoh.
+  </footer>
 
-    <section class="grid" id="grid"></section>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-    <p class="foot">Tampilan rancangan (mockup).</p>
-  </main>
-
-  <script src="script.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
