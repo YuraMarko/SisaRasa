@@ -3,24 +3,8 @@ const ILUSTRASI = {
   selaiNanas: () => '<img src="images/nanas.jpg" alt="Selai nanas SisaRasa">',
   selaiPisang: () => '<img src="images/pisang.jpg" alt="Selai pisang SisaRasa">',
 
-  buahPisang: () => `
-    <svg width="130" height="110" viewBox="0 0 130 110" role="img" aria-label="Pisang matang">
-      <path d="M14 36 Q36 104 112 62 Q118 58 116 52 Q70 82 26 24 Q16 24 14 36 Z" fill="#E9C23F"/>
-      <path d="M26 20 Q50 76 106 54" stroke="#C99A1E" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <path d="M30 14 Q34 6 40 8 L36 22 Z" fill="#5A3A22"/>
-      <path d="M112 62 Q120 60 119 52 L113 54 Z" fill="#5A3A22"/>
-      <g fill="#7A4B20" opacity="0.75"><circle cx="48" cy="58" r="2.6"/><circle cx="62" cy="68" r="2.2"/><circle cx="80" cy="66" r="2.8"/><circle cx="94" cy="60" r="2"/><circle cx="36" cy="44" r="2"/></g>
-    </svg>`,
-
-  buahNanas: () => `
-    <svg width="110" height="130" viewBox="0 0 110 130" role="img" aria-label="Nanas matang">
-      <path d="M55 30 Q40 4 28 12 Q40 16 46 32 Z" fill="#4C8A3A"/>
-      <path d="M55 30 Q55 0 55 2 Q58 18 60 32 Z" fill="#3F7A30"/>
-      <path d="M55 30 Q70 4 84 10 Q70 16 64 32 Z" fill="#4C8A3A"/>
-      <ellipse cx="55" cy="82" rx="38" ry="48" fill="#E8A530"/>
-      <path d="M26 56 L84 112 M40 44 L92 94 M24 78 L66 124 M84 56 L26 112 M70 44 L20 96 M88 78 L44 124" stroke="#B9772E" stroke-width="2.4" opacity="0.7"/>
-      <g fill="#7A4B20" opacity="0.7"><circle cx="46" cy="70" r="2.6"/><circle cx="66" cy="88" r="2.6"/><circle cx="52" cy="104" r="2.2"/></g>
-    </svg>`,
+  buahPisang: () => '<img src="images/bRaaja.jpg" alt="Pisang matang">',
+  buahNanas: () => '<img src="images/bNanas.jpg" alt="Nanas matang">',
 
   buahLain: () => `
     <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Buah">
