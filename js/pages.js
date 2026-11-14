@@ -159,6 +159,35 @@ function halamanKeranjang() {
 }
 
 // ===== Checkout =====
+// Pilihan jadwal ambil per tempat pengambilan
+function opsiSlot(g) {
+  if (g.kat === 'selai') {
+    const po = infoPO();
+    const jam = ['10.00–12.00', '13.00–15.00', '16.00–18.00'];
+    const opsi = [];
+    [0, 1].forEach((tambah) => {
+      const d = new Date(po.siap.getTime() + tambah * 86400000);
+      jam.forEach((j) => opsi.push(`${tgl(d)}, ${j}`));
+    });
+    return opsi;
+  }
+  // Roti dan buah: jam ambil per 2 jam, sampai batas jam penjual (hari yang sama)
+  const batas = parseInt(String(g.ambilSampai || '17').split(/[.:]/)[0], 10) || 17;
+  const opsi = [];
+  for (let mulai = 8; mulai < batas; mulai += 2) {
+    const akhir = Math.min(mulai + 2, batas);
+    const f = (n) => String(n).padStart(2, '0') + '.00';
+    opsi.push(`Hari ini, ${f(mulai)}–${f(akhir)}`);
+  }
+  return opsi.length ? opsi : [`Hari ini, sebelum ${g.ambilSampai}`];
+}
+
+function nomorVA() {
+  let n = '8808';
+  for (let i = 0; i < 10; i++) n += Math.floor(Math.random() * 10);
+  return n;
+}
+
 function halamanCheckout() {
   const items = itemKeranjang();
   if (!items.length) {
@@ -166,6 +195,7 @@ function halamanCheckout() {
   }
   const masalah = cekKeranjang(items);
   const kelompok = kelompokAmbil(items);
+  const subtotal = totalKeranjang(items);
   const ringkas = (g) => `
     <section class="kelompok">
       <div class="kel-kepala"><span class="chip chip-${g.kat}">${KATEGORI[g.kat].label}</span><b>${esc(g.penjual)}</b></div>
@@ -174,27 +204,77 @@ function halamanCheckout() {
       </ul>
       <p class="kel-ambil"><b>Ambil di:</b> ${esc(g.lokasi)}<br><b>Waktu:</b> ${esc(g.waktu)}</p>
     </section>`;
+  const blokSlot = (g, i) => `
+    <div class="kel-form">
+      <div class="kel-kepala"><span class="chip chip-${g.kat}">${KATEGORI[g.kat].label}</span><b>${esc(g.penjual)}</b></div>
+      <p class="kel-ambil">${esc(g.lokasi)}</p>
+      <label for="slot-${i}">Jadwal ambil</label>
+      <select id="slot-${i}" name="slot-${i}" data-kunci="${esc(g.kunci)}">
+        ${opsiSlot(g).map((o) => `<option value="${esc(o)}">${esc(o)}</option>`).join('')}
+      </select>
+    </div>`;
+  const va = nomorVA();
   return `
     <p class="jejak"><a href="#/keranjang">Keranjang</a> / Checkout</p>
     <h1 class="rata-kiri">Checkout</h1>
     ${masalah.length ? `<div class="peringatan" role="alert">${masalah.map(esc).join('<br>')} <a href="#/keranjang">Ubah keranjang</a></div>` : ''}
     ${kelompok.map(ringkas).join('')}
-    <div class="total-bar"><span>Total bayar</span><b>${rupiah(totalKeranjang(items))}</b></div>
 
     <form id="form-checkout" class="form" novalidate>
-      <h2 class="judul-bagian">Data pembeli</h2>
-      <label for="nama">Nama</label>
+      <h2 class="judul-bagian pertama">1. Data pembeli</h2>
+      <label for="nama">Nama lengkap</label>
       <input id="nama" name="nama" type="text" autocomplete="name" required maxlength="60">
       <label for="wa">Nomor WhatsApp</label>
       <input id="wa" name="wa" type="tel" inputmode="numeric" autocomplete="tel" placeholder="08xxxxxxxxxx" required maxlength="16">
+      <p class="bantu">Dipakai untuk memberi kabar kalau ada perubahan stok atau jadwal.</p>
+      <label for="email">Email (opsional)</label>
+      <input id="email" name="email" type="email" autocomplete="email" maxlength="80">
 
+      <h2 class="judul-bagian">2. Pengambilan</h2>
+      ${kelompok.map(blokSlot).join('')}
+      <label for="pengambil">Diambil orang lain? Tulis namanya (opsional)</label>
+      <input id="pengambil" name="pengambil" type="text" maxlength="60">
+      <label for="catatan">Catatan untuk penjual (opsional)</label>
+      <textarea id="catatan" name="catatan" rows="3" maxlength="200" placeholder="Contoh: pisangnya yang sudah berbintik saja"></textarea>
+
+      <h2 class="judul-bagian">3. Pembayaran</h2>
       <fieldset>
-        <legend>Metode pembayaran</legend>
+        <legend class="sr-only">Metode pembayaran</legend>
         <label class="radio"><input type="radio" name="metode" value="QRIS" checked> QRIS</label>
-        <label class="radio"><input type="radio" name="metode" value="Transfer bank"> Transfer bank</label>
+        <label class="radio"><input type="radio" name="metode" value="Transfer bank"> Transfer bank (virtual account)</label>
         <label class="radio"><input type="radio" name="metode" value="E-wallet"> E-wallet</label>
       </fieldset>
+
+      <div class="bayar" data-bayar="QRIS">
+        <div class="qris-contoh" role="img" aria-label="Contoh kode QRIS">QRIS<br>contoh</div>
+        <p>Scan QRIS dengan aplikasi bank atau e-wallet, lalu bayar tepat <b>${rupiah(subtotal)}</b>.</p>
+      </div>
+      <div class="bayar" data-bayar="Transfer bank" hidden>
+        <label for="bank">Pilih bank</label>
+        <select id="bank" name="bank">
+          <option>BCA</option><option>Mandiri</option><option>BNI</option><option>BRI</option>
+        </select>
+        <p>Nomor virtual account: <b class="mono" id="va">${va}</b></p>
+        <p>Transfer tepat <b>${rupiah(subtotal)}</b>.</p>
+      </div>
+      <div class="bayar" data-bayar="E-wallet" hidden>
+        <label for="ewallet">Pilih e-wallet</label>
+        <select id="ewallet" name="ewallet">
+          <option>GoPay</option><option>OVO</option><option>DANA</option><option>ShopeePay</option>
+        </select>
+        <p>Kamu akan diarahkan ke aplikasi untuk mengonfirmasi pembayaran <b>${rupiah(subtotal)}</b>.</p>
+      </div>
       <p class="catatan">Pembayaran di prototipe ini masih simulasi: tidak ada uang yang sungguh dipindahkan.</p>
+
+      <div class="rincian" aria-label="Rincian biaya">
+        <div><span>Subtotal</span><span>${rupiah(subtotal)}</span></div>
+        <div><span>Biaya layanan</span><span>Rp0</span></div>
+        <div class="jumlah"><span>Total bayar</span><b>${rupiah(subtotal)}</b></div>
+      </div>
+
+      <label class="centang"><input type="checkbox" name="setuju" required>
+        <span>Saya paham produk ini sisa yang masih layak, tampilannya bisa kurang mulus, dan saya akan mengambil sendiri di lokasi penjual sesuai jadwal.</span></label>
+
       <div id="pesan-form" class="peringatan" role="alert" hidden></div>
       <button type="submit" class="btn btn-besar"${masalah.length ? ' disabled' : ''}>Bayar sekarang (simulasi)</button>
     </form>`;
@@ -206,7 +286,8 @@ function rincianPesanan(o) {
   // pakai tanggal siap yang tersimpan di pesanan
   const siap = o.poSiap ? 'Siap diambil sekitar ' + tgl(new Date(o.poSiap)) : null;
   return kelompok.map((g) => {
-    const waktu = g.kat === 'selai' && siap ? siap : g.waktu;
+    const slot = (o.pengambilan || []).find((x) => x.kunci === g.kunci);
+    const waktu = slot ? 'Jadwal ambil: ' + slot.slot : (g.kat === 'selai' && siap ? siap : g.waktu);
     return `
       <section class="kelompok">
         <div class="kel-kepala"><span class="chip chip-${g.kat}">${KATEGORI[g.kat].label}</span><b>${esc(g.penjual)}</b></div>
@@ -231,7 +312,11 @@ function halamanPesanan(kode) {
     </div>
     ${rincianPesanan(o)}
     <div class="total-bar"><span>Total dibayar (${esc(o.metode)})</span><b>${rupiah(o.total)}</b></div>
-    <p class="catatan">Atas nama ${esc(o.pembeli.nama)} · WhatsApp ${esc(o.pembeli.wa)} · ${new Date(o.dibuat).toLocaleString('id-ID')}</p>
+    <p class="catatan">Atas nama ${esc(o.pembeli.nama)} · WhatsApp ${esc(o.pembeli.wa)}${o.email ? ' · ' + esc(o.email) : ''}<br>
+      ${o.pengambil ? 'Diambil oleh: ' + esc(o.pengambil) + '<br>' : ''}
+      ${o.catatan ? 'Catatan: ' + esc(o.catatan) + '<br>' : ''}
+      Pembayaran: ${esc(o.detailBayar || o.metode)}<br>
+      ${new Date(o.dibuat).toLocaleString('id-ID')}</p>
     <p class="aksi-bawah"><a class="btn btn-garis" href="#/pesanan">Semua pesanan</a><a class="btn" href="#/">Belanja lagi</a></p>`;
 }
 

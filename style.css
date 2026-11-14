@@ -347,7 +347,64 @@ input:focus-visible, select:focus-visible, .btn:focus-visible, .step:focus-visib
   outline: 3px solid var(--nanas);
   outline-offset: 2px;
 }
-input[type="radio"] { width: 20px; height: 20px; accent-color: var(--jam); }
+input[type="radio"], input[type="checkbox"] { width: 20px; height: 20px; flex: none; accent-color: var(--jam); }
+
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--garis);
+  border-radius: 8px;
+  background: var(--ground);
+  color: var(--ink);
+  font: 500 15px 'Inter', system-ui, sans-serif;
+  resize: vertical;
+}
+input[type="email"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid var(--garis);
+  border-radius: 8px;
+  background: var(--ground);
+  color: var(--ink);
+  font: 500 15px 'Inter', system-ui, sans-serif;
+}
+textarea:focus-visible, input[type="email"]:focus-visible { outline: 3px solid var(--nanas); outline-offset: 2px; }
+
+.form .judul-bagian { margin: 28px 0 4px; padding-top: 20px; border-top: 1px solid var(--garis); }
+.form .judul-bagian.pertama { margin-top: 0; padding-top: 0; border-top: 0; }
+.bantu { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mono { font-family: 'DejaVu Sans Mono', monospace; letter-spacing: 1px; }
+
+.kel-form { margin-top: 14px; padding: 12px 14px; background: var(--ground); border-radius: 10px; }
+.kel-form .kel-ambil { margin: 0; }
+.kel-form label { margin-top: 10px; }
+
+.bayar { margin-top: 10px; padding: 14px; background: var(--ground); border-radius: 10px; font-size: 14px; line-height: 1.5; }
+.bayar p { margin: 8px 0 0; }
+.bayar label { margin-top: 0; }
+.qris-contoh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border: 2px dashed var(--muted);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.rincian { margin-top: 18px; padding: 14px; border-radius: 10px; background: var(--kuning); font-size: 14px; }
+.rincian > div { display: flex; justify-content: space-between; padding: 3px 0; }
+.rincian .jumlah { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--pisang); font-size: 16px; }
+.rincian .jumlah b { font-size: 18px; color: var(--jam); }
+
+.form label.centang { display: flex; align-items: flex-start; gap: 10px; margin: 18px 0 0; font-weight: 500; line-height: 1.5; }
 .form .btn-besar { margin-top: 16px; }
 .form[hidden], [hidden] { display: none !important; }
 

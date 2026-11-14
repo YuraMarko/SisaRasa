@@ -20,6 +20,7 @@ function render() {
   appEl.innerHTML = html;
   perbaruiNav(nama);
   if (nama === 'pedagang') sesuaikanFormStok();
+  if (nama === 'checkout') sesuaikanBayar();
 }
 
 function perbaruiNav(nama) {
@@ -117,7 +118,16 @@ function sesuaikanFormStok() {
   f.stok.min = kat === 'buah' ? '0.5' : '1';
 }
 
+// ===== Form checkout: tampilkan rincian sesuai metode bayar =====
+function sesuaikanBayar() {
+  const f = document.getElementById('form-checkout');
+  if (!f) return;
+  const metode = f.metode.value;
+  f.querySelectorAll('[data-bayar]').forEach((d) => { d.hidden = d.dataset.bayar !== metode; });
+}
+
 document.addEventListener('change', (e) => {
+  if (e.target.name === 'metode') sesuaikanBayar();
   if (e.target.closest('#form-stok') && (e.target.name === 'kat' || e.target.name === 'jenisBuah')) sesuaikanFormStok();
 });
 
@@ -171,8 +181,18 @@ document.addEventListener('submit', (e) => {
     const wa = form.wa.value.replace(/[\s-]/g, '');
     if (nama.length < 2) return tampilPesanForm('Isi nama kamu.');
     if (!/^(\+62|62|0)8\d{7,12}$/.test(wa)) return tampilPesanForm('Nomor WhatsApp belum benar. Contoh: 081234567890.');
+    const email = form.email.value.trim();
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) return tampilPesanForm('Alamat email belum benar.');
+    if (!form.setuju.checked) return tampilPesanForm('Centang persetujuan dulu sebelum membayar.');
     const metode = form.metode.value;
-    const r = buatPesanan({ nama, wa }, metode);
+    let detailBayar = metode;
+    if (metode === 'Transfer bank') detailBayar = 'Transfer bank ' + form.bank.value + ', VA ' + document.getElementById('va').textContent + ' (simulasi)';
+    if (metode === 'E-wallet') detailBayar = 'E-wallet ' + form.ewallet.value + ' (simulasi)';
+    if (metode === 'QRIS') detailBayar = 'QRIS (simulasi)';
+    const pengambilan = [...form.querySelectorAll('select[data-kunci]')].map((s) => ({ kunci: s.dataset.kunci, slot: s.value }));
+    const r = buatPesanan({ nama, wa }, metode, {
+      email, catatan: form.catatan.value.trim(), pengambil: form.pengambil.value.trim(), pengambilan, detailBayar,
+    });
     if (!r.ok) return tampilPesanForm(r.pesan);
     location.hash = '#/pesanan/' + encodeURIComponent(r.pesanan.kode);
   }

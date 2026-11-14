@@ -168,7 +168,7 @@ function kelompokAmbil(items) {
     const p = it.produk || it;
     const kunci = p.kat + '|' + p.penjual + '|' + p.lokasi;
     if (!peta.has(kunci)) {
-      peta.set(kunci, { kat: p.kat, penjual: p.penjual, lokasi: p.lokasi, ambilSampai: p.ambilSampai, items: [], subtotal: 0 });
+      peta.set(kunci, { kunci, kat: p.kat, penjual: p.penjual, lokasi: p.lokasi, ambilSampai: p.ambilSampai, items: [], subtotal: 0 });
     }
     const g = peta.get(kunci);
     g.items.push(it);
@@ -209,7 +209,7 @@ function cekKeranjang(items) {
   return masalah;
 }
 
-function buatPesanan(pembeli, metode) {
+function buatPesanan(pembeli, metode, tambahan = {}) {
   const items = itemKeranjang();
   if (!items.length) return { ok: false, pesan: 'Keranjang masih kosong.' };
   const masalah = cekKeranjang(items);
@@ -228,6 +228,11 @@ function buatPesanan(pembeli, metode) {
     metode,
     items: baris,
     total: baris.reduce((t, b) => t + b.harga * b.qty, 0),
+    email: tambahan.email || '',
+    catatan: tambahan.catatan || '',
+    pengambil: tambahan.pengambil || '',
+    pengambilan: tambahan.pengambilan || [],
+    detailBayar: tambahan.detailBayar || metode,
     statusBayar: 'Lunas (simulasi)',
     poSiap: baris.some((b) => b.kat === 'selai') ? po.siap.toISOString() : null,
   };
